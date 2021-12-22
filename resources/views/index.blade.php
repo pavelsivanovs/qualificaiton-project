@@ -12,7 +12,7 @@
 
     <link href="/css/app.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-zinc-100">
     <div id="root"></div>
 </body>
 </html>
