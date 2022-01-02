@@ -15,11 +15,14 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('name', 30);
+            $table->string('surname', 30);
+            $table->string('email', 254)->unique();
+            $table->string('password', 256);  // todo check whether the length is justified
+            $table->foreignId('status')->references('id')->on('user_statuses');
+            $table->string('telephone_number', 15);
+            $table->foreignId('profile_picture')->nullable()->references('id')->on('pictures');
+            $table->boolean('is_active');
             $table->timestamps();
         });
     }
