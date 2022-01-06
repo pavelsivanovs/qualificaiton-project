@@ -35,6 +35,13 @@ class User extends Authenticatable
     ];
 
     /**
+     * @var array
+     */
+    protected $attributes = [
+        'is_active' => true
+    ];
+
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
@@ -98,5 +105,29 @@ class User extends Authenticatable
     public function userAccountDeactivationRequest()
     {
         return $this->hasOne(UserAccountDeactivationRequest::class, 'user');
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->status == UserStatus::STATUS_ADMIN;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isProjectManager()
+    {
+        return $this->status == UserStatus::STATUS_PM;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRegularUser()
+    {
+        return $this->status == UserStatus::STATUS_REGULAR;
     }
 }

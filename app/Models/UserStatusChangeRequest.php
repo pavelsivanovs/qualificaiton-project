@@ -23,6 +23,13 @@ class UserStatusChangeRequest extends Model
     ];
 
     /**
+     * @var array
+     */
+    protected $attributes = [
+        'request_status' => RequestStatus::STATUS_PENDING
+    ];
+
+    /**
      * @return BelongsTo
      */
     public function user()

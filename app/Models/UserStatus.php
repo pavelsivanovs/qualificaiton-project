@@ -14,6 +14,21 @@ class UserStatus extends Model
     use HasFactory;
 
     /**
+     * @const
+     */
+    const STATUS_ADMIN = 1;
+
+    /**
+     * @const
+     */
+    const STATUS_PM = 2;
+
+    /**
+     * @const
+     */
+    const STATUS_REGULAR = 3;
+
+    /**
      * @var string[]
      */
     protected $fillable = [
