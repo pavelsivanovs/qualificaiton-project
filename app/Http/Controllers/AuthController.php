@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserRegistered;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -12,6 +13,7 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Throwable;
 
@@ -113,7 +115,7 @@ class AuthController extends Controller
             return redirect('/register')->with('error', 'Notikusi sistēmas kļūda. Lūdzu, mēģiniet vēlreiz!');
         }
 
-        MailController::sendRegistrationMail($user, $request['password']);
+        Mail::to($user)->send(new UserRegistered($user, $request['password']));
 
         return redirect('/login')->with('message', 'Lietotāja konts ir sekmīgi izveidots!');
     }
