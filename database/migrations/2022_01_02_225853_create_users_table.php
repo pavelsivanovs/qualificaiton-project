@@ -18,11 +18,11 @@ class CreateUsersTable extends Migration
             $table->string('name', 30);
             $table->string('surname', 30);
             $table->string('email', 254)->unique();
-            $table->string('password', 256);  // todo check whether the length is justified
+            $table->string('password', 60);  // put 60 because that is the length of the hash
             $table->foreignId('status')->references('id')->on('user_statuses');
             $table->string('telephone_number', 15);
             $table->foreignId('profile_picture')->nullable()->references('id')->on('pictures');
-            $table->boolean('is_active');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
