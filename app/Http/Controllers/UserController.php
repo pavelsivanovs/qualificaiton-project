@@ -79,7 +79,7 @@ class UserController extends Controller
     public function requestDeactivation()
     {
         $id = Auth::id();
-        $deactivation_request = UserAccountDeactivationRequest::where('user', $id)->first();
+        $deactivation_request = UserAccountDeactivationRequest::find($id);
 
         if ($deactivation_request) {
             return redirect(self::USER_EDIT_URL)->with('error', 'Konta izslēgšanas pieteikums jau ir izveidots!');
@@ -107,7 +107,7 @@ class UserController extends Controller
 
         /** @var User $user */
         $user = Auth::user();
-        $new_status = UserStatus::with('id', $request['new_status'])->first();
+        $new_status = UserStatus::find($request['new_status']);
 
         if (!$new_status) {
             return redirect(self::USER_EDIT_URL)
@@ -119,7 +119,7 @@ class UserController extends Controller
         }
 
         /** @var UserStatusChangeRequest $status_change_request */
-        $status_change_request = UserStatusChangeRequest::with('user', $user->id)->first();
+        $status_change_request = UserStatusChangeRequest::firstWhere('user', $user->id);
 
         if ($status_change_request) {
             return redirect(self::USER_EDIT_URL)
