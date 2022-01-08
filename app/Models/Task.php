@@ -27,6 +27,13 @@ class Task extends Model
     ];
 
     /**
+     * @var array
+     */
+    protected $attributes = [
+        'status' => TaskStatus::STATUS_PENDING
+    ];
+
+    /**
      * @return BelongsTo
      */
     public function project()
