@@ -14,6 +14,21 @@ class RequestStatus extends Model
     use HasFactory;
 
     /**
+     * @const
+     */
+    const STATUS_PENDING = 1;
+
+    /**
+     * @const
+     */
+    const STATUS_COMPLETED = 2;
+
+    /**
+     * @const
+     */
+    const STATUS_DECLINED = 3;
+
+    /**
      * @var string[]
      */
     protected $fillable = [
