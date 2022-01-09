@@ -44,12 +44,12 @@ class TaskController extends Controller
         $projects = $user->isProjectManager()
             ? Project::with('project_manager', $user->id)->orderBy('title')->get()
             : Project::all();
-        $users = User::all();
+        $assignees = User::with('is_active', 1);
 
         return view('task.create', [
             'user' => $user,
             'projects' => $projects,
-            'users' => $users
+            'assignees' => $assignees
         ]);
     }
 
@@ -153,7 +153,7 @@ class TaskController extends Controller
         $projects = $user->isProjectManager()
             ? Project::with('project_manager', $user->id)->orderBy('title')->get()
             : Project::all();
-        $users = User::all();
+        $assignees = User::with('is_active', 1)->get();
 //        $task_pictures = DB::table('pictures')
 //            ->leftJoin('task_pictures', 'pictures.id', '=', 'task_pictures.picture')
 //            ->where('task_pictures.task', '=', $task->id)
@@ -164,7 +164,7 @@ class TaskController extends Controller
             'task' => $task,
             'user' => $user,
             'projects' => $projects,
-            'users' => $users,
+            'assignees' => $assignees,
             'task_pictures' => $task_pictures
         ])
             : redirect()->back()->with('error', 'Notikusi sistēmas kļūda. Lūdzu, mēģiniet vēlreiz!');
