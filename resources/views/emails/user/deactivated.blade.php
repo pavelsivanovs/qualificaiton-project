@@ -1,8 +1,8 @@
 @component('mail::message')
-    # Sveicināti!
+# Sveicināti!
 
-    Jūsu lietotāja konts tika izslēgts.
+Jūsu lietotāja konts tika izslēgts.
 
-    Ar cieņu,<br>
-    {{ config('app.name') }}
+Ar cieņu,<br>
+{{ config('app.name') }}
 @endcomponent
