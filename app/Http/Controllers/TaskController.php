@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CommentAdded;
 use App\Models\Comment;
 use App\Models\Picture;
 use App\Models\Project;
@@ -20,6 +21,7 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * @TaskController
@@ -307,7 +309,9 @@ class TaskController extends Controller
             'comment' => 'required|string|max:2000'
         ]);
 
+        /** @var User $user */ // note: maybe wrong
         $user = Auth::user();
+        /** @var Task $task */
         $task = Task::find($task_id);
 
         if (!$task) {
@@ -320,6 +324,18 @@ class TaskController extends Controller
         $comment->comment = $request['comment'];
         $comment->setCreatedAt(Carbon::now()->toDateTimeString());
         $comment->save();
+
+        $assignee = $task->assignee();
+        $project_manager = $task->project->projectManager;
+
+        if ($user == $assignee) {
+            Mail::to($project_manager)->send(new CommentAdded($task, $user));
+        } else if ($user == $project_manager) {
+            Mail::to($assignee)->send(new CommentAdded($task, $user));
+        } else {
+            Mail::to($project_manager)->send(new CommentAdded($task, $user));
+            Mail::to($assignee)->send(new CommentAdded($task, $user));
+        }
 
         return redirect()->back()->with('message', 'Komentārs ir pievienots!');
     }
