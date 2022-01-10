@@ -28,6 +28,7 @@ class UserController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     * At the same time displays user info.
      *
      * @return View
      */
@@ -43,7 +44,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return RedirectResponse|Redirector
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         $request->validate([
             'name' => 'nullable|string',
