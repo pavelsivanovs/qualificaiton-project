@@ -23,6 +23,8 @@ use Throwable;
 class AuthController extends Controller
 {
     /**
+     * Display the login page.
+     *
      * @return Application|Factory|View
      */
     public function index()
@@ -31,6 +33,8 @@ class AuthController extends Controller
     }
 
     /**
+     * Login the user.
+     *
      * @param Request $request
      * @return Application|RedirectResponse|Redirector
      */
@@ -42,7 +46,8 @@ class AuthController extends Controller
         ]);
 
         /** @var User $user */
-        $user = User::with('email', $request['email'])->first();
+//        $user = User::with('email', $request['email'])->first();
+        $user = User::firstWhere('email', $request['email']);
 
         if (!$user) {
             return redirect('/login')->with('error', 'E-pasta adrese vai parole ir nepareiza!');
@@ -61,6 +66,8 @@ class AuthController extends Controller
     }
 
     /**
+     * Logout the user.
+     *
      * @return Application|RedirectResponse|Redirector
      */
     public function logout()
@@ -76,6 +83,8 @@ class AuthController extends Controller
     }
 
     /**
+     * Display registration form.
+     *
      * @return Application|Factory|View
      */
     public function register()
@@ -84,6 +93,8 @@ class AuthController extends Controller
     }
 
     /**
+     * Register a new user to the system.
+     *
      * @param Request $request
      * @return Application|RedirectResponse|Redirector
      */
@@ -104,13 +115,14 @@ class AuthController extends Controller
         $user->surname = $request['surname'];
         $user->email = $request['email'];
         $user->password = Hash::make($request['password']);
-        $user->telephoneNumber = $request['telephone_number'];
-        $user->profilePicture = $request['profile_picture'];
+        $user->telephone_number = $request['telephone_number'];
+        $user->profile_picture = $request['profile_picture'];
 
         try {
-            $user->saveOrFail();
+            $user->save();
         } catch (Throwable $e) {
             Log::error('Error creating user', $user->toArray());
+            Log::error($e);
 
             return redirect('/register')->with('error', 'Notikusi sistēmas kļūda. Lūdzu, mēģiniet vēlreiz!');
         }

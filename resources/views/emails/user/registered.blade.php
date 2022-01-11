@@ -5,7 +5,7 @@ Sistēmā PPIS tika izveidots lietotāja profils ar šiem autentificēšanas dat
 - e-pasta adrese: {{ $user->email }}
 - parole: {{ $password }}
 
-@component('mail::button', ['url' => '/login'])
+@component('mail::button', ['url' => route('showLogin')])
 Pieteikties sistēmā
 @endcomponent
 

@@ -2,6 +2,13 @@
 
 namespace App\Http\Controllers;
 
+/**
+ * Lietotāju pārvaldes kontrolieris.
+ * Kontrolieris īsteno lietotāju moduļa funkcijas.
+ *
+ * @author Pavels Ivanovs <paulivanov586@gmail.com> <pi15003@students.lu.lv>
+ */
+
 use App\Models\RequestStatus;
 use App\Models\User;
 use App\Models\UserAccountDeactivationRequest;
@@ -27,6 +34,9 @@ class UserController extends Controller
     const USER_EDIT_URL = '/user/edit';
 
     /**
+     * Parādīt formu priekš konkrētas entītijas rediģēšanas.
+     * Vienlaicīgi rāda arī tās pašas entītātes informāciju.
+     *
      * Show the form for editing the specified resource.
      * At the same time displays user info.
      *
@@ -38,6 +48,8 @@ class UserController extends Controller
     }
 
     /**
+     * Atjaunot konkrētas entītijas datus datubāzē.
+     *
      * Update the specified resource in storage.
      *
      * @param Request $request
@@ -75,6 +87,8 @@ class UserController extends Controller
     }
 
     /**
+     * Izveidot pieteikumu uz lietotāja profila izslēgšanu.
+     *
      * @return Application|RedirectResponse|Redirector
      */
     public function requestDeactivation()
@@ -97,6 +111,8 @@ class UserController extends Controller
     }
 
     /**
+     * Izveidot pieteikumu uz lietotāja statusa maiņu.
+     *
      * @param Request $request
      * @return Application|RedirectResponse|Redirector
      */

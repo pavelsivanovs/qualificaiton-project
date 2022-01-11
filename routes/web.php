@@ -32,7 +32,7 @@ Route::middleware(IsNotAuthenticated::class)->group(function () {
 });
 
 Route::middleware(IsAuthenticated::class)->group(function () {
-    Route::view('/', 'index')->name('showHome');
+    Route::get('/', [ProjectController::class, 'index'])->name('showHome'); // todo change to the home
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
     // User

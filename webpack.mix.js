@@ -11,13 +11,6 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .react()
-    .extract(['react'])
-    .postCss('resources/css/app.css', 'public/css', [
-        require('tailwindcss')
-    ])
-    .browserSync(process.env.MIX_APP_URL)
-    .after(webpackStats => {
-        console.log('Compilation complete', webpackStats);
-    });
+mix.js('resources/js/index.js', 'public/js')
+    .sass('resources/sass/app.scss', 'public/css')
+    .sourceMaps();

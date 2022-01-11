@@ -38,6 +38,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $attributes = [
+        'status' => UserStatus::STATUS_REGULAR,
         'is_active' => true
     ];
 
