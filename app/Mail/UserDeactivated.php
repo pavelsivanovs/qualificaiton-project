@@ -27,6 +27,6 @@ class UserDeactivated extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.user.deactivated');
+        return $this->markdown('emails.user.deactivated')->subject('Lietotāja profila izslēgšana');
     }
 }

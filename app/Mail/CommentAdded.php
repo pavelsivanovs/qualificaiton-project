@@ -18,12 +18,12 @@ class CommentAdded extends Mailable
     /**
      * @var Task
      */
-    protected $task;
+    public $task;
 
     /**
      * @var User
      */
-    protected $comment_author;
+    public $comment_author;
 
     /**
      * Create a new message instance.
@@ -47,6 +47,6 @@ class CommentAdded extends Mailable
 
         return $this->markdown('emails.task.commentAdded')->with([
             'task_url' => $task_url
-        ]);
+        ])->subject('Jauns komentārs');
     }
 }

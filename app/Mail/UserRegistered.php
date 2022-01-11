@@ -14,12 +14,12 @@ class UserRegistered extends Mailable
     /**
      * @var User
      */
-    protected $user;
+    public $user;
 
     /**
      * @var string
      */
-    protected $password;
+    public $password;
 
     /**
      * Create a new message instance.
@@ -40,6 +40,6 @@ class UserRegistered extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.users.registered');
+        return $this->markdown('emails.user.registered')->subject('Sveicināti!');
     }
 }

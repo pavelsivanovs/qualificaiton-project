@@ -18,12 +18,12 @@ class UserStatusChanged extends Mailable
     /**
      * @var UserStatus
      */
-    protected $old_status;
+    public $old_status;
 
     /**
      * @var UserStatus
      */
-    protected $new_status;
+    public $new_status;
 
     /**
      * Create a new message instance.
@@ -43,6 +43,6 @@ class UserStatusChanged extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.user.statusChanged');
+        return $this->markdown('emails.user.statusChanged')->subject('Jauns lietotāja profila statuss');
     }
 }
