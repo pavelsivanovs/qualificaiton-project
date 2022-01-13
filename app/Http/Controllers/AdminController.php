@@ -121,7 +121,7 @@ class AdminController extends Controller
 
         /** @var User $user */
         $user = User::find($deactivation_request->user);
-        $user->isActive = 0;
+        $user->is_active = 0;
         $user->save();
 
         $deactivation_request->requestStatus = RequestStatus::STATUS_COMPLETED;

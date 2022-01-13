@@ -99,7 +99,7 @@ class ProjectController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return Application|Factory|View|RedirectResponse|Response
+     * @return Application|Factory|RedirectResponse|View
      */
     public function show($id)
     {
@@ -110,12 +110,16 @@ class ProjectController extends Controller
             return redirect()->back()->with('error', 'Notikusi sistēmas kļūda. Lūdzu, mēģiniet vēlreiz!');
         }
 
-        $tasks = Task::with('project', $project->id)->orderByDesc('updated_at')->get();
+//        $tasks = DB::table('tasks')->where('project', '=', $project->id)
+//            ->orderByDesc('created_at')->get();
+        $can_alter_project = Auth::user()->isAdmin()
+            || (Auth::user()->isProjectManager() && $project->projectManager == Auth::user());
 
         return view('project.show', [
             'project' => $project,
-            'tasks' => $tasks,
-            'accent_color' => $project->accentColor
+            'tasks' => $project->tasks,
+            'accent_color' => $project->accent_color ?? env('PRIMARY_COLOR'),
+            'can_alter_project' => $can_alter_project
         ]);
     }
 
@@ -123,7 +127,7 @@ class ProjectController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return Application|Factory|View|RedirectResponse|Response
+     * @return Application|Factory|RedirectResponse|View
      */
     public function edit($id)
     {
@@ -143,7 +147,7 @@ class ProjectController extends Controller
      *
      * @param Request $request
      * @param  int  $id
-     * @return RedirectResponse|Response
+     * @return Application|Redirector|RedirectResponse
      */
     public function update(Request $request, $id)
     {

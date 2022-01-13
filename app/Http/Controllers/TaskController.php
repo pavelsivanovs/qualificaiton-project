@@ -89,7 +89,7 @@ class TaskController extends Controller
 
         /** @var User $assignee */
         $assignee = User::find($request['assignee']);
-        if (!$assignee || !$assignee->isActive) {
+        if (!$assignee || !$assignee->is_active) {
             return redirect()->back()->with('error', 'Izvēlētam lietotājam nevar piesaistīt uzdevumu!');
         }
 
@@ -130,13 +130,19 @@ class TaskController extends Controller
     {
         /** @var Task $task */
         $task = Task::find($id);
-        $pictures = $task->pictures;
-        $comments = $task->comments;
+        $pictures = $task->pictures();
+        $comments = $task->comments->sortByDesc('created_at');
+        $accent_color = $task->taskProject->accent_color ?? env('PRIMARY_COLOR');
+        $task_statuses = TaskStatus::all();
+        $can_edit = Auth::user()->isAdmin() || Auth::user() == $task->taskProject->projectManager;
 
         return $task ? view('task.show', [
             'task' => $task,
             'pictures' => $pictures,
-            'comments' => $comments
+            'comments' => $comments,
+            'accent_color' => $accent_color,
+            'task_statuses' => $task_statuses,
+            'can_edit' => $can_edit
         ]) : redirect()->back()->with('error', 'Notikusi sistēmas kļūda. Lūdzu, mēģiniet vēlreiz!');
     }
 
@@ -228,7 +234,7 @@ class TaskController extends Controller
         if ($request['assignee']) {
             $assignee = User::find($request['assignee']);
 
-            if (!$assignee || !$assignee->isActive) {
+            if (!$assignee || !$assignee->is_active) {
                 return redirect()->back()->with('error', 'Izvēlētam lietotājam nevar piesaistīt uzdevumu!');
             }
 
@@ -319,14 +325,14 @@ class TaskController extends Controller
         }
 
         $comment = new Comment();
-        $comment->task = $task;
-        $comment->author = $user;
+        $comment->task = $task->id;
+        $comment->author = $user->id;
         $comment->comment = $request['comment'];
         $comment->setCreatedAt(Carbon::now()->toDateTimeString());
         $comment->save();
 
-        $assignee = $task->assignee();
-        $project_manager = $task->project->projectManager;
+        $assignee = $task->taskAssignee;
+        $project_manager = $task->taskProject->projectManager;
 
         if ($user == $assignee) {
             Mail::to($project_manager)->send(new CommentAdded($task, $user));
@@ -358,16 +364,16 @@ class TaskController extends Controller
             return redirect()->back()->with('error', 'Notikusi sistēmas kļūda. Lūdzu, mēģiniet vēlreiz!');
         }
 
-        if ($new_status == $task->status) {
+        if ($new_status->id == $task->status) {
             return redirect()->back()->with('error', 'Uzdevuma esošs statuss sakrīt ar jaunu!');
         }
 
-        $task->status = $new_status;
+        $task->status = $new_status->id;
         $task->save();
 
         $comment = new Comment();
-        $comment->author = Auth::user();
-        $comment->task = $task;
+        $comment->author = Auth::user()->id;
+        $comment->task = $task->id;
         $comment->comment = 'Nomainīja uzdevuma statusu uz \'' . $new_status->description . '\'';
         $comment->setCreatedAt(Carbon::now()->toDateTimeString());
         $comment->save();

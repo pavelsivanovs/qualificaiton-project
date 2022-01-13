@@ -46,14 +46,13 @@ class AuthController extends Controller
         ]);
 
         /** @var User $user */
-//        $user = User::with('email', $request['email'])->first();
         $user = User::firstWhere('email', $request['email']);
 
         if (!$user) {
             return redirect('/login')->with('error', 'E-pasta adrese vai parole ir nepareiza!');
         }
 
-        if (!$user->isActive) {
+        if (!$user->is_active) {
             return redirect('/login')->with('error', 'Lietotāja konts ir izslēgts.');
         }
 

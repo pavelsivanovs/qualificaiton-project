@@ -25,7 +25,7 @@ class Comment extends Model
     /**
      * @return BelongsTo
      */
-    public function author()
+    public function commentAuthor()
     {
         return $this->belongsTo(User::class, 'author');
     }
@@ -33,7 +33,7 @@ class Comment extends Model
     /**
      * @return BelongsTo
      */
-    public function task()
+    public function commentTask()
     {
         return $this->belongsTo(Task::class, 'task');
     }

@@ -27,7 +27,7 @@ class IsAuthenticated
 
         /** @var User $user */
         $user = Auth::user();
-        if (!$user->isActive) {
+        if (!$user->is_active) {
             Session::flush();
             Auth::logout();
 

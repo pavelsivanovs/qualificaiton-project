@@ -36,7 +36,7 @@ class Task extends Model
     /**
      * @return BelongsTo
      */
-    public function project()
+    public function taskProject()
     {
         return $this->belongsTo(Project::class, 'project');
     }
@@ -44,7 +44,7 @@ class Task extends Model
     /**
      * @return BelongsTo
      */
-    public function status()
+    public function taskStatus()
     {
         return $this->belongsTo(TaskStatus::class, 'status');
     }
@@ -52,7 +52,7 @@ class Task extends Model
     /**
      * @return BelongsTo
      */
-    public function assignee()
+    public function taskAssignee()
     {
         return $this->belongsTo(User::class, 'assignee');
     }

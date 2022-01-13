@@ -41,7 +41,7 @@ Route::middleware(IsAuthenticated::class)->group(function () {
 
     // Task
     Route::get('/task/{id}', [TaskController::class, 'show'])->name('showTask');
-    Route::post('/task/{id}/comment', [TaskController::class, 'addComment'])->name('addCommnt');
+    Route::post('/task/{id}/comment', [TaskController::class, 'addComment'])->name('addComment');
     Route::get('/task/{id}/status/{new_status_id}', [TaskController::class, 'changeStatus'])
         ->name('changeStatus');
 

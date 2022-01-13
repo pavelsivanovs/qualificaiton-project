@@ -11,10 +11,16 @@
     </title>
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('layers.png') }}">
 
     <script type="text/javascript" src="{{ asset('js/index.js') }}"></script>
 
     <script>
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+        var toastList = toastElList.map(function (toastEl) {
+            return new bootstrap.Toast(toastEl, option)
+        })
+
         $(document).ready(() => {
             const message = sessionStorage.getItem('error-message');
 
@@ -22,11 +28,24 @@
             console.debug('Message from the server', message);
 
             if (message) {
-                $('#messages').append('<span>' + message + '</span>');
+                const toastContent = `
+                    <div class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                ${message}
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                `;
+
+                $('#messages').append(toastContent);
                 sessionStorage.removeItem('error-message');
             }
         });
     </script>
+
+    @stack('scripts')
 </head>
 <body class="container min-vh-100 d-flex flex-column justify-content-between">
 @auth
@@ -43,12 +62,13 @@
                     </a>
                 </li>
             @endif
+            <li class="nav-item"><a class="btn btn-outline-secondary" href="{{ route('logout') }}">Atteikties no sistēmas</a></li>
         </ul>
     </nav>
 @endauth
 
 <main class="py-4 container">
-    <div id="messages"></div>
+    <div id="messages position-fixed bottom-0 end-0 p-3" style="z-index: 11"></div>
     @yield('content')
 </main>
 

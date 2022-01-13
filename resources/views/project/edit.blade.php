@@ -1,0 +1,11 @@
+@extends('layouts.index')
+
+@section('title', $project->title)
+
+@section('content')
+    {{ $project->title }}
+    {{ $accent_color }}
+    @foreach($tasks as $task)
+        {{ $task->title }}
+    @endforeach
+@endsection

@@ -96,6 +96,57 @@ class DatabaseSeeder extends Seeder
             'telephone_number' => '22334455'
         ]);
 
+        // projects
+        DB::table('projects')->insert([
+            'title' => 'Kvalifikācijas darbs',
+            'description' => 'Janvāri mums ir jāsagatavo kvalifikācijas darbs. Laiks iet. Vajag saorganizēt darbu.
+            Cik labi, ka kāds LU DF students izveidoja informācijas sistēmu projektu pārvaldībai. Izmantosim to!',
+            'project_manager' => '2',
+            'accent_color' => 'A69888'
+        ]);
+        DB::table('projects')->insert([
+            'title' => 'Ekonomikas rehabilitācija',
+            'description' => 'Inflācija, enerģētiskā krīze, pandēmija! Kaut kas ir jādara ar šo. Te izveidosim uzdevumus un tālāk lēmsis, ko mēs visi ar šo darīsim',
+            'project_manager' => '2',
+            'accent_color' => 'db877f'
+        ]);
+        DB::table('projects')->insert([
+            'title' => 'Testēšana',
+            'description' => 'Viena no darba lielām daļām ir projekta testēšana. Mums ir jānodrošina kvalitāte!',
+            'project_manager' => '2',
+            'accent_color' => '8b861b'
+        ]);
+        DB::table('projects')->insert([
+            'title' => 'Personīgais pet-project',
+            'description' => 'Pirms sūtīt savu CV, es izveidošu nelielu projektiņu priekš portfolio. Plānojam pabeigt janvārī.',
+            'project_manager' => '2',
+            'accent_color' => '683718'
+        ]);
+
+        // tasks
+        DB::table('tasks')->insert([
+            'title' => 'Izveidot lietotāju saskarņu projektējumus',
+            'description' => 'Piektajā daļā nepieiešams iekļaut dažas lietotāju saskarnes. Ir jāizveido projektējums uzdevuma veidošanas un uzdevuma skatīšanas saskarnēm. Ja ir kādi jautājumi, tad lūdzu, vēršaties. Paldies.',
+            'project' => '1',
+            'status' => '2',
+            'assignee' => '3',
+            'deadline' => '2022-01-10'
+        ]);
+        DB::table('tasks')->insert([
+            'title' => 'Noformēt dokumentāciju',
+            'description' => 'Saskaņa ar Latvijas Universitātes noteikumiem, gala darbiem ir jābūt atbilstoši noformētiem. Lūdzu aplūkot noformēju vadlīnijas (https://estudijas.lu.lv/pluginfile.php/228929/mod_resource/content/0/2012/PrasibasNoslegumaDarbuIzstrade_2012.pdf) un noformet dokumentāciju atbilstoši tām. Paldies!',
+            'project' => '1',
+            'status' => '2',
+            'assignee' => '3'
+        ]);
+        DB::table('tasks')->insert([
+            'title' => 'Notestēt Autentifikācijas moduli',
+            'description' => 'Ir nepieciešams izveidot testa piemērus autentifikācijas moduļa funkcijām, un atbilstoši tiem notestēt visas funkcijas. Gala rezultātus pierakstīt dokumentācijā ar atbilstošu noformējumu. Paldies!',
+            'project' => '3',
+            'status' => '2',
+            'assignee' => '2'
+        ]);
+
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }
