@@ -55,10 +55,10 @@
                         @endif
                     </div>
 
-                    <div class="form-row my-3">
-                        <label for="profile_picture" class="form-label">Profila bilde</label>
+{{--                    <div class="form-row my-3">--}}
+{{--                        <label for="profile_picture" class="form-label">Profila bilde</label>--}}
 
-                    </div>
+{{--                    </div>--}}
 
                     <div class="form-row my-3">
                         <label for="telephone_number" class="form-label">Tālruņa numurs</label>

@@ -16,32 +16,28 @@
     <script type="text/javascript" src="{{ asset('js/index.js') }}"></script>
 
     <script>
-        var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'));
         var toastList = toastElList.map(function (toastEl) {
             return new bootstrap.Toast(toastEl, option)
-        })
+        });
 
-        $(document).ready(() => {
-            const message = sessionStorage.getItem('error-message');
+        $(document).ready(function () {
+            var errorMessage = '{{ session('error') }}';
+            var message = '{{ session('message') }}';
 
             console.log(sessionStorage);
+            console.debug('Error from the server', errorMessage);
             console.debug('Message from the server', message);
 
-            if (message) {
-                const toastContent = `
-                    <div class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                        <div class="d-flex">
-                            <div class="toast-body">
-                                ${message}
-                            </div>
-                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                        </div>
-                    </div>
-                `;
+            if (message || errorMessage) {
+                var notification = $('#notification');
+                var toast = new bootstrap.Toast(notification);
 
-                $('#messages').append(toastContent);
-                sessionStorage.removeItem('error-message');
+                toast.show();
             }
+
+            message = sessionStorage.getItem('message');
+            console.log('Message from the server', message);
         });
     </script>
 
@@ -62,13 +58,29 @@
                     </a>
                 </li>
             @endif
-            <li class="nav-item"><a class="btn btn-outline-secondary" href="{{ route('logout') }}">Atteikties no sistēmas</a></li>
+            <li class="nav-item"><a class="btn btn-outline-secondary"
+                                    href="{{ route('logout') }}">Atteikties no sistēmas</a></li>
         </ul>
     </nav>
 @endauth
 
 <main class="py-4 container">
-    <div id="messages position-fixed bottom-0 end-0 p-3" style="z-index: 11"></div>
+    <div id="messages" style="z-index: 11">
+        @if (session('error') || session('message'))
+            <div id="notification"
+                 class="toast align-items-center text-white {{ session('error') ? 'bg-danger' : 'bg-info' }} border-0"
+                 role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {{ session('error') ?? session('message') }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                </div>
+            </div>
+        @endif
+    </div>
+
     @yield('content')
 </main>
 

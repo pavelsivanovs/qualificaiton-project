@@ -63,7 +63,7 @@ class User extends Authenticatable
     /**
      * @return BelongsTo
      */
-    public function status()
+    public function userStatus()
     {
         return $this->belongsTo(UserStatus::class, 'status');
     }

@@ -130,6 +130,11 @@ class TaskController extends Controller
     {
         /** @var Task $task */
         $task = Task::find($id);
+
+        if (!$task) {
+            return redirect()->back()->with('error', 'Notikusi sistēmas kļūda. Lūdzu, mēģiniet vēlreiz!');
+        }
+
         $pictures = $task->pictures();
         $comments = $task->comments->sortByDesc('created_at');
         $accent_color = $task->taskProject->accent_color ?? env('PRIMARY_COLOR');

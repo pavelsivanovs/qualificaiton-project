@@ -28,10 +28,10 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $status_change_requests = UserStatusChangeRequest::with(
+        $status_change_requests = UserStatusChangeRequest::firstWhere(
             'request_status',
             RequestStatus::STATUS_PENDING
-        )->get();
+        );
         $deactivation_requests = UserAccountDeactivationRequest::with(
             'request_status',
             RequestStatus::STATUS_PENDING

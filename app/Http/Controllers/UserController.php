@@ -21,6 +21,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 /**
@@ -44,7 +46,13 @@ class UserController extends Controller
      */
     public function edit()
     {
-        return view('user.edit');
+        $user = Auth::user();
+        $user_statuses = UserStatus::all();
+
+        return view('user.edit', [
+            'user' => $user,
+            'user_statuses' => $user_statuses
+        ]);
     }
 
     /**
@@ -69,21 +77,42 @@ class UserController extends Controller
         ]);
 
         $id = Auth::id();
-        $new_data = [];
+        $new_data = array();
 
-        foreach ($request as $attribute => $value) {
-            if ($request[$attribute]) {
-                $new_data[$attribute] = $value;
-            }
+        $name = $request['name'];
+        $surname = $request['surname'];
+        $email = $request['email'];
+        $password = $request['password'];
+        $telephone_number = $request['telephone_number'];
+        $profile_picture = $request['profile_picture'];
+
+        if ($name) {
+            $new_data['name'] = $name;
+        }
+        if ($surname) {
+            $new_data['surname'] = $surname;
+        }
+        if ($email) {
+            $new_data['email'] = $email;
+        }
+        if ($password) {
+            $new_data['password'] = Hash::make($password);
+        }
+        if ($telephone_number) {
+            $new_data['telephone_number'] = $telephone_number;
+        }
+        if ($profile_picture) {
+            $new_data['profile_picture'] = $profile_picture;
         }
 
-        if (!empty($new_data)) {
+        if ($new_data != array()) {
             $new_data['updated_at'] = Carbon::now()->toDateTimeString();
+
             DB::table('users')->where('id', $id)->update($new_data);
 
-            return redirect(self::USER_EDIT_URL)->with('message', 'Lietotāja informācija ir sekmīgi atjaunota!');
+            return redirect()->back()->with('message', 'Lietotāja informācija ir sekmīgi atjaunota!');
         }
-        return redirect(self::USER_EDIT_URL);
+        return redirect()->back()->with('message', 'nebūs');
     }
 
     /**
@@ -106,7 +135,7 @@ class UserController extends Controller
         $deactivation_request->setCreatedAt(Carbon::now()->toDateTimeString());
         $deactivation_request->save();
 
-        return redirect(self::USER_EDIT_URL)
+        return redirect()->back()
             ->with('message', 'Pieteikums lietotāju profila izslēgšanai ir izveidots sekmīgi.');
     }
 
@@ -122,34 +151,39 @@ class UserController extends Controller
             'new_status' => 'required|integer'
         ]);
 
+        Log::debug('new_status', (array)$request);
+
         /** @var User $user */
         $user = Auth::user();
         $new_status = UserStatus::find($request['new_status']);
 
         if (!$new_status) {
-            return redirect(self::USER_EDIT_URL)
+            Log::debug('here1');
+            return redirect()->back()
                 ->with('error', 'Izvēlētais statuss neeksistē. Lūdzu, izvēlējieties citu statusu!');
         }
 
         if ($user->id == $new_status->id) {
-            return redirect('error', 'Izvēlētais statuss jau ir lietotājam.');
+            Log::debug('here2');
+            return redirect()->back()->with('error', 'Izvēlētais statuss jau ir lietotājam.');
         }
 
         /** @var UserStatusChangeRequest $status_change_request */
         $status_change_request = UserStatusChangeRequest::firstWhere('user', $user->id);
 
         if ($status_change_request) {
-            return redirect(self::USER_EDIT_URL)
+            Log::debug('here3');
+            return redirect()->back()
                 ->with('error', 'Lietotāja statusa izmaiņas pieteikums jau ir izveidots!');
         }
 
         $status_change_request = new UserStatusChangeRequest();
-        $status_change_request->user = $user;
-        $status_change_request->userRequestedStatus = $new_status;
+        $status_change_request->user = $user->id;
+        $status_change_request->user_requested_status = $new_status->id;
         $status_change_request->setCreatedAt(Carbon::now()->toDateTimeString());
         $status_change_request->save();
 
-        return redirect(self::USER_EDIT_URL)
+        return redirect()->back()
             ->with('message', 'Pieteikums lietotāja statusa maiņai ir izveidots sekmīgi.');
     }
 }

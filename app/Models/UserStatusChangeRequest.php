@@ -48,7 +48,7 @@ class UserStatusChangeRequest extends Model
     /**
      * @return BelongsTo
      */
-    public function requestStatus()
+    public function userRequestStatus()
     {
         return $this->belongsTo(RequestStatus::class, 'request_status');
     }

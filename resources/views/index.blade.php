@@ -8,11 +8,13 @@
 
     <script defer src="/js/manifest.js"></script>
     <script defer src="/js/vendor.js"></script>
-    <script defer src="/js/app.js"></script>
+    <script defer src="/js/index.js"></script>
 
     <link href="/css/app.css" rel="stylesheet">
 </head>
-<body class="bg-zinc-100">
-    <div id="root"></div>
+<body class="">
+    This one is home.
+    <div id="root" class="mx-auto container min-h-screen">
+    </div>
 </body>
 </html>

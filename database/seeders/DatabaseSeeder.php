@@ -57,15 +57,15 @@ class DatabaseSeeder extends Seeder
         DB::table('user_statuses')->truncate();
         DB::statement('ALTER TABLE user_statuses AUTO_INCREMENT=1;');
         DB::table('user_statuses')->insert([
-            'status' => 'admin',
+            'status' => 'Administrators',
             'description' => 'Administrator of the whole system. Has the biggest privileges.'
         ]);
         DB::table('user_statuses')->insert([
-            'status' => 'project_manager',
+            'status' => 'Projekta vadītājs',
             'description' => 'Project Manager has the access to managing projects.'
         ]);
         DB::table('user_statuses')->insert([
-            'status' => 'regular',
+            'status' => 'Parasts lietotājs',
             'description' => 'Regular User.'
         ]);
 

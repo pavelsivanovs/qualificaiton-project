@@ -32,12 +32,15 @@ Route::middleware(IsNotAuthenticated::class)->group(function () {
 });
 
 Route::middleware(IsAuthenticated::class)->group(function () {
-    Route::get('/', [ProjectController::class, 'index'])->name('showHome'); // todo change to the home
+//    Route::get('/', [ProjectController::class, 'index'])->name('showHome'); // todo change to the home
+    Route::view('/', 'user.home')->name('showHome');
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
     // User
     Route::get('/user/edit', [UserController::class, 'edit'])->name('editUser');
     Route::post('/user/edit', [UserController::class, 'update'])->name('updateUser');
+    Route::post('/user/request/status', [UserController::class, 'requestStatusChange'])
+        ->name('statusChangeRequest');
 
     // Task
     Route::get('/task/{id}', [TaskController::class, 'show'])->name('showTask');
@@ -55,14 +58,13 @@ Route::middleware([IsAuthenticated::class, IsRegularOrProjectManager::class])
         // User
         Route::get('/user/request/deactivation', [UserController::class, 'requestDeactivation'])
             ->name('deactivationRequest');
-        Route::post('/user/request/status', [UserController::class, 'requestStatusChange'])
-            ->name('statusChangeRequest');
     });
 
 Route::middleware([IsAuthenticated::class, IsProjectManagerOrAdministrator::class])
     ->group(function () {
         // Task
-        Route::get('/task/create', [TaskController::class, 'create'])->name('createTask');
+//        Route::get('/task/create', [TaskController::class, 'create'])->name('createTask');
+        Route::view('/task/create', 'task.create')->name('createTask');
         Route::post('/task/create', [TaskController::class, 'store'])->name('storeTask');
         Route::get('/task/{id}/edit', [TaskController::class, 'edit'])->name('editTask');
         Route::post('/task/{id}/edit', [TaskController::class, 'update'])->name('updateTask');
